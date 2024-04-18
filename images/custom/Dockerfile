@@ -26,41 +26,27 @@ RUN apt-get update --yes && \
 
 USER ${NB_UID}
 
-# Install Python 3 packages
+# Install Python 3 packages + jupyterlab_code_formatter black isort
 RUN mamba install --yes \
     'altair' \
-    'beautifulsoup4' \
     'bokeh' \
-    'bottleneck' \
-    'cloudpickle' \
-    'conda-forge::blas=*=openblas' \
-    'cython' \
-    'dask' \
-    'dill' \
-    'h5py' \
-    'ipympl'\
     'ipywidgets' \
     'jupyterlab-git' \
     'matplotlib-base' \
-    'numba' \
-    'numexpr' \
-    'openpyxl' \
     'pandas' \
-    'patsy' \
-    'protobuf' \
-    'pytables' \
-    'scikit-image' \
-    'scikit-learn' \
     'scipy' \
     'seaborn' \
-    'sqlalchemy' \
     'statsmodels' \
-    'sympy' \
-    'widgetsnbextension'\
-    'xlrd' && \
+    'jupyterlab_code_formatter' \
+    'black' \
+    'isort' \
+    'widgetsnbextension' && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
+
+# Install the pip packages
+RUN pip install watermark statannotations --no-cache-dir
 
 # Install facets package which does not have a `pip` or `conda-forge` package at the moment
 WORKDIR /tmp
